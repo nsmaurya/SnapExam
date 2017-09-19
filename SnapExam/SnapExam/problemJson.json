@@ -1,0 +1,113 @@
+[
+  {
+    "responseType": "date",
+    "question": "When did you start playing Badminton?",
+    "options": [
+      {
+        "text": ""
+      }
+    ]
+  },
+  {
+    "responseType": "text",
+    "question": "Why are you interested in Badminton?",
+    "options": [
+      {
+        "text": ""
+      }
+    ]
+  },
+  {
+    "responseType": "integer",
+    "question": "How long have you been interested in Badminton?",
+    "options": [
+      {
+        "text": ""
+      }
+    ]
+  },
+  {
+    "responseType": "singleSelect",
+    "question": "Who is your favourite male Indian Badminton Player?",
+    "options": [
+      {
+        "text": "Gopichand",
+        "isSelected": false
+      },
+      {
+        "text": "Prakash Padukone",
+        "isSelected": true
+      }
+    ]
+  },
+  {
+    "responseType": "singleSelect",
+    "question": "How frequently do you practice?",
+    "options": [
+      {
+        "text": "Some days",
+        "isSelected": false
+      },
+      {
+        "text": "Most days",
+        "isSelected": false
+      },
+      {
+        "text": "Every day",
+        "isSelected": false
+      }
+    ]
+  },
+  {
+    "responseType": "multiSelect",
+    "question": "Now, lets talk about something else. Why you want to be a Snapster?",
+    "options": [
+      {
+        "text": "Be a part of something great!",
+        "isSelected": false
+      },
+      {
+        "text": "Get to work on some challenging problems!",
+        "isSelected": false
+      },
+      {
+        "text": "Get to work with an awesome team ",
+        "isSelected": false
+      },
+      {
+        "text": "Get to have a lot of fun at work!",
+        "isSelected": false
+      },
+      {
+        "text": "Get an opportunity to be a part of the initial team and when we make it big, I am going shopping!",
+        "isSelected": false
+      },
+      {
+        "text": "Have the best learning experience ever",
+        "isSelected": false
+      }
+    ]
+  },
+  {
+    "responseType": "multiSelect",
+    "question": "What would you like to do for fun at work?",
+    "options": [
+      {
+        "text": "Download Torrents",
+        "isSelected": false
+      },
+      {
+        "text": "Go for a run",
+        "isSelected": false
+      },
+      {
+        "text": "Food, more the merrier",
+        "isSelected": false
+      },
+      {
+        "text": "Let me think about it...",
+        "isSelected": false
+      }
+    ]
+  }
+]

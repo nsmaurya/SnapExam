@@ -10,6 +10,8 @@
 		1CB5FC03CF641310B812F34E /* libPods-SnapExamTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 53BC30C76C990BBDCBDDA7FE /* libPods-SnapExamTests.a */; };
 		3021452FA0DD03180A8A5063 /* libPods-SnapExamUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37F0AA8C1B2D989B1B51DC80 /* libPods-SnapExamUITests.a */; };
 		838960BB1159276B9048D722 /* Pods_SnapExam.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9D1B51CA84E184C82916B4 /* Pods_SnapExam.framework */; };
+		BA8C0ACB1F700A4E005CA6D3 /* JSonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8C0ACA1F700A4E005CA6D3 /* JSonManager.swift */; };
+		BA8C0ACD1F700B22005CA6D3 /* problemJson.json in Resources */ = {isa = PBXBuildFile; fileRef = BA8C0ACC1F700B22005CA6D3 /* problemJson.json */; };
 		BAE25C4A1F6FF9570078DFF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C491F6FF9570078DFF2 /* AppDelegate.swift */; };
 		BAE25C4F1F6FF9570078DFF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BAE25C4D1F6FF9570078DFF2 /* Main.storyboard */; };
 		BAE25C511F6FF9570078DFF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE25C501F6FF9570078DFF2 /* Assets.xcassets */; };
@@ -18,7 +20,8 @@
 		BAE25C6A1F6FF9570078DFF2 /* SnapExamUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C691F6FF9570078DFF2 /* SnapExamUITests.swift */; };
 		BAE25C7C1F6FFDAE0078DFF2 /* ExamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7B1F6FFDAE0078DFF2 /* ExamViewController.swift */; };
 		BAE25C7E1F6FFDF10078DFF2 /* ExamInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */; };
-		BAE25C801F6FFE420078DFF2 /* Paper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7F1F6FFE420078DFF2 /* Paper.swift */; };
+		BAE25C801F6FFE420078DFF2 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7F1F6FFE420078DFF2 /* Question.swift */; };
+		BAF653531F71496C0004F79F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF653521F71496C0004F79F /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,8 @@
 		7E9D1B51CA84E184C82916B4 /* Pods_SnapExam.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapExam.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8882AF8DBB883B585CE11134 /* Pods-SnapExamUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapExamUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapExamUITests/Pods-SnapExamUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		AC0B8613D02992BC819239D4 /* Pods-SnapExamTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapExamTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapExamTests/Pods-SnapExamTests.release.xcconfig"; sourceTree = "<group>"; };
+		BA8C0ACA1F700A4E005CA6D3 /* JSonManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSonManager.swift; sourceTree = "<group>"; };
+		BA8C0ACC1F700B22005CA6D3 /* problemJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = problemJson.json; sourceTree = "<group>"; };
 		BAE25C461F6FF9560078DFF2 /* SnapExam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapExam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE25C491F6FF9570078DFF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../AppDelegate.swift; sourceTree = "<group>"; };
 		BAE25C4E1F6FF9570078DFF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -61,7 +66,8 @@
 		BAE25C6B1F6FF9570078DFF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BAE25C7B1F6FFDAE0078DFF2 /* ExamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamViewController.swift; sourceTree = "<group>"; };
 		BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamInteractor.swift; sourceTree = "<group>"; };
-		BAE25C7F1F6FFE420078DFF2 /* Paper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paper.swift; sourceTree = "<group>"; };
+		BAE25C7F1F6FFE420078DFF2 /* Question.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
+		BAF653521F71496C0004F79F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FD249F64CB5C2A0911769467 /* Pods-SnapExamUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapExamUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapExamUITests/Pods-SnapExamUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +109,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BA8C0AC91F700A3A005CA6D3 /* JSONManager */ = {
+			isa = PBXGroup;
+			children = (
+				BA8C0ACA1F700A4E005CA6D3 /* JSonManager.swift */,
+			);
+			path = JSONManager;
+			sourceTree = "<group>";
+		};
 		BAE25C3D1F6FF9560078DFF2 = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +147,7 @@
 				BAE25C781F6FFD5F0078DFF2 /* Utility */,
 				BAE25C791F6FFD5F0078DFF2 /* View */,
 				BAE25C501F6FF9570078DFF2 /* Assets.xcassets */,
+				BA8C0ACC1F700B22005CA6D3 /* problemJson.json */,
 				BAE25C521F6FF9570078DFF2 /* LaunchScreen.storyboard */,
 				BAE25C551F6FF9570078DFF2 /* Info.plist */,
 			);
@@ -160,7 +175,7 @@
 		BAE25C771F6FFD5F0078DFF2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BAE25C7F1F6FFE420078DFF2 /* Paper.swift */,
+				BAE25C7F1F6FFE420078DFF2 /* Question.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -168,6 +183,8 @@
 		BAE25C781F6FFD5F0078DFF2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				BAF653511F71495E0004F79F /* Extensions */,
+				BA8C0AC91F700A3A005CA6D3 /* JSONManager */,
 				BAE25C491F6FF9570078DFF2 /* AppDelegate.swift */,
 			);
 			path = Utility;
@@ -188,6 +205,14 @@
 				BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */,
 			);
 			path = "Business Logic - Interactor";
+			sourceTree = "<group>";
+		};
+		BAF653511F71495E0004F79F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BAF653521F71496C0004F79F /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C4882A2052E9BAA094BAB36E /* Pods */ = {
@@ -325,6 +350,7 @@
 				BAE25C541F6FF9570078DFF2 /* LaunchScreen.storyboard in Resources */,
 				BAE25C511F6FF9570078DFF2 /* Assets.xcassets in Resources */,
 				BAE25C4F1F6FF9570078DFF2 /* Main.storyboard in Resources */,
+				BA8C0ACD1F700B22005CA6D3 /* problemJson.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,8 +533,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAE25C7C1F6FFDAE0078DFF2 /* ExamViewController.swift in Sources */,
+				BAF653531F71496C0004F79F /* Extensions.swift in Sources */,
 				BAE25C7E1F6FFDF10078DFF2 /* ExamInteractor.swift in Sources */,
-				BAE25C801F6FFE420078DFF2 /* Paper.swift in Sources */,
+				BAE25C801F6FFE420078DFF2 /* Question.swift in Sources */,
+				BA8C0ACB1F700A4E005CA6D3 /* JSonManager.swift in Sources */,
 				BAE25C4A1F6FF9570078DFF2 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
