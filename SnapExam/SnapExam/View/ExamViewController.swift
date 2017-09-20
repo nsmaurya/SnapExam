@@ -9,7 +9,7 @@
 import UIKit
 
 class ExamViewController: UIViewController {
-
+    
     //IBOutlet
     @IBOutlet weak var startTestButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -20,7 +20,6 @@ class ExamViewController: UIViewController {
     //Variables
     var questionList = [Question]()
     lazy var examInteractor = ExamInteractor.sharedInstance
-    let tableSectionQuestionFont = UIFont.boldSystemFont(ofSize: 16.0)
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -36,6 +35,12 @@ class ExamViewController: UIViewController {
     }
     
     //MARK:- Helper method
+    
+    fileprivate func addKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     fileprivate func initialSetup() {
         self.startTestButton.layer.borderColor = UIColor(red: 20.0/255.0, green: 130.0/255.0, blue: 250.0/255.0, alpha: 1.0).cgColor
         self.startTestButton.layer.borderWidth = 1.0
@@ -47,6 +52,36 @@ class ExamViewController: UIViewController {
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 54.0
         self.tableView.tableFooterView = UIView()
+    }
+    
+    fileprivate func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    fileprivate func showNoQuestionAvailableScreen() {
+        self.infoLabel.textColor = UIColor.red
+        self.infoLabel.text = "Question not available\n Please contact to admin"
+        self.tableView.isHidden = true
+        self.navigationItem.rightBarButtonItem = nil
+    }
+    
+    // MARK: Touches Began
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.hideKeyboard()
+    }
+    
+    // MARK: Keyboard Notification Method
+    func keyboardDidShow(_ notification:Foundation.Notification) {
+        if let dict = (notification as NSNotification).userInfo {
+            if let height = (dict[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height {
+                self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: height/2, right: 0)
+            }
+        }
+    }
+    
+    func keyboardDidHide(_ notification:Foundation.Notification) {
+        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.tableView.setContentOffset(self.tableView.frame.origin, animated: true)
     }
     
     //MARK:- Action method
@@ -63,28 +98,38 @@ class ExamViewController: UIViewController {
             self.rightBarButton = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(rightBarButtonTapped))
             self.navigationItem.rightBarButtonItem = rightBarButton
             
+            //adding keyboard observer
+            self.addKeyboardObserver()
+            
             //setting up table view
             self.tableSetup()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        } else {
+            self.showNoQuestionAvailableScreen()
         }
     }
     
     @IBAction func rightBarButtonTapped() {
+        self.hideKeyboard()
         if self.rightBarButton.title == "Done" {
-            self.infoLabel.textColor = UIColor.green
-            self.infoLabel.text = "Thank You!!!\n You are done"
+            self.infoLabel.textColor = UIColor.blue
+            self.infoLabel.text = "Congratulations!!!\n You are passed😊"
             self.tableView.isHidden = true
             self.navigationItem.rightBarButtonItem = nil
         } else {
             var isLastPage = true
             (isLastPage, questionList) = examInteractor.getQuestions()
-            if isLastPage {
+            if isLastPage {//checking for last page
                 self.rightBarButton.title = "Done"
             }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if questionList.count > 0 {
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {//if no question available
+                self.showNoQuestionAvailableScreen()
             }
         }
     }
@@ -106,55 +151,75 @@ extension ExamViewController:UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let textHeight = self.questionList[section].question?.height(withConstrainedWidth: UIScreen.main.bounds.size.width - 20.0, font: tableSectionQuestionFont) {
-            return textHeight + 30.0
-        } else {
-            return 0.0
-        }
+        return examInteractor.getQuestionHeaderHeight(text: self.questionList[section].question)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let textHeight = self.questionList[section].question?.height(withConstrainedWidth: UIScreen.main.bounds.size.width - 20.0, font: tableSectionQuestionFont) {
-            let headerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: textHeight + 30.0))
-            headerView.backgroundColor = UIColor.white
-            let questionLabel = UILabel(frame: CGRect(x: 10.0, y: 15.0, width: UIScreen.main.bounds.size.width - 20.0, height: textHeight))
-            questionLabel.numberOfLines = 0
-            questionLabel.font = tableSectionQuestionFont
-            questionLabel.text = self.questionList[section].question
-            headerView.addSubview(questionLabel)
-            return headerView
-        }
-        return nil
+        return QuestionHeaderView().headerView(text: self.questionList[section].question)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "QuestionCell", for: indexPath) as? QuestionCell else {
             fatalError("QuestionCell not found...")
         }
-        
         cell.questionButton.isHidden = false
         cell.questionTextField.isHidden = true
         cell.questionLabel.isHidden = false
         
         let question = self.questionList[indexPath.section]
         let questionOption = question.questionOptions ?? [QuestionOption]()
-        if question.responseType == "singleSelect" || question.responseType == "multiSelect" {/*radio/checkbox*/
-            cell.questionLabel.text = questionOption[indexPath.row].text
-            cell.questionButton.isSelected = questionOption[indexPath.row].isSelected ?? false
-            if question.responseType == "singleSelect" {
-                cell.questionButton.setImage(#imageLiteral(resourceName: "radio_unselected"), for: .normal)
-                cell.questionButton.setImage(#imageLiteral(resourceName: "radio_selected"), for: .selected)
-            } else {
-                cell.questionButton.setImage(#imageLiteral(resourceName: "checkbox_unselected"), for: .normal)
-                cell.questionButton.setImage(#imageLiteral(resourceName: "checkbox_selected"), for: .selected)
+        if let responseType = question.responseType {
+            if let resType = QuestionType(rawValue: responseType) {
+                switch  resType {
+                case .singleSelect, .multiSelect://for radio, checkbox
+                    cell.questionLabel.text = questionOption[indexPath.row].text
+                    cell.questionButton.isSelected = questionOption[indexPath.row].isSelected ?? false
+                    if resType == .singleSelect {
+                        cell.questionButton.setImage(#imageLiteral(resourceName: "radio_unselected"), for: .normal)
+                        cell.questionButton.setImage(#imageLiteral(resourceName: "radio_selected"), for: .selected)
+                    } else {
+                        cell.questionButton.setImage(#imageLiteral(resourceName: "checkbox_unselected"), for: .normal)
+                        cell.questionButton.setImage(#imageLiteral(resourceName: "checkbox_selected"), for: .selected)
+                    }
+                default://for text, integer, date
+                    cell.questionButton.isHidden = true
+                    cell.questionTextField.isHidden = false
+                    cell.questionLabel.isHidden = true
+                    cell.questionTextField.text = questionOption[indexPath.row].text
+                }
             }
-        } else {//textfield
-            cell.questionButton.isHidden = true
-            cell.questionTextField.isHidden = false
-            cell.questionLabel.isHidden = true
-            cell.questionTextField.text = questionOption[indexPath.row].text
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.hideKeyboard()
+        let question = questionList[indexPath.section]
+        if let responseType = question.responseType {
+            if let questionType = QuestionType(rawValue: responseType) {
+                examInteractor.updateAnswerOption(indexPath: indexPath, questionType: questionType)
+            }
+        }
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+}
+
+//MARK:- UITextfield Delegate
+extension ExamViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        var cellView = textField.superview?.superview
+        if let v = cellView {
+            if !(v.isKind(of: QuestionCell.self)) {
+                cellView = textField.superview
+            }
+        }
+        if let cell = cellView as? QuestionCell {
+            if let indexPath = self.tableView.indexPath(for: cell) {
+                examInteractor.updateAnswerOption(indexPath: indexPath, questionType: .text, text: textField.text)
+            }
+        }
     }
 }
 
@@ -170,4 +235,3 @@ class QuestionCell: UITableViewCell {
         super.awakeFromNib()
     }
 }
-

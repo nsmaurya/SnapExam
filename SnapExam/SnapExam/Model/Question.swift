@@ -9,31 +9,15 @@
 import Foundation
 import ObjectMapper
 
-
-/*{
-    "responseType": "multiSelect",
-    "question": "Now, lets talk about something else. Why you want to be a Snapster?",
-    "options": [
-    {
-    "text": "Be a part of something great!",
-    "isSelected": false
-    },
-    {
-    "text": "Get to work on some challenging problems!",
-    "isSelected": false
-    },
-}
-*/
-
-struct Question: Mappable {
+class Question: Mappable {
     
     var responseType: String?
     var question: String?
     var questionOptions: [QuestionOption]?
     
-    init?(map: Map) {}
+    required init?(map: Map) {}
     
-    mutating func mapping(map: Map) {
+    func mapping(map: Map) {
         responseType <- map["responseType"]
         question <- map["question"]
         questionOptions <- map["options"]

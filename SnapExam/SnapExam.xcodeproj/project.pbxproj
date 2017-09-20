@@ -22,6 +22,7 @@
 		BAE25C7E1F6FFDF10078DFF2 /* ExamInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */; };
 		BAE25C801F6FFE420078DFF2 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE25C7F1F6FFE420078DFF2 /* Question.swift */; };
 		BAF653531F71496C0004F79F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF653521F71496C0004F79F /* Extensions.swift */; };
+		BAF653561F71825D0004F79F /* QuestionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF653551F71825D0004F79F /* QuestionHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExamInteractor.swift; sourceTree = "<group>"; };
 		BAE25C7F1F6FFE420078DFF2 /* Question.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		BAF653521F71496C0004F79F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BAF653551F71825D0004F79F /* QuestionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionHeaderView.swift; sourceTree = "<group>"; };
 		FD249F64CB5C2A0911769467 /* Pods-SnapExamUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapExamUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapExamUITests/Pods-SnapExamUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,7 +145,6 @@
 			isa = PBXGroup;
 			children = (
 				BAE25C7A1F6FFD6B0078DFF2 /* Business Logic - Interactor */,
-				BAE25C771F6FFD5F0078DFF2 /* Model */,
 				BAE25C781F6FFD5F0078DFF2 /* Utility */,
 				BAE25C791F6FFD5F0078DFF2 /* View */,
 				BAE25C501F6FF9570078DFF2 /* Assets.xcassets */,
@@ -177,7 +178,8 @@
 			children = (
 				BAE25C7F1F6FFE420078DFF2 /* Question.swift */,
 			);
-			path = Model;
+			name = Model;
+			path = ../Model;
 			sourceTree = "<group>";
 		};
 		BAE25C781F6FFD5F0078DFF2 /* Utility */ = {
@@ -195,6 +197,7 @@
 			children = (
 				BAE25C4D1F6FF9570078DFF2 /* Main.storyboard */,
 				BAE25C7B1F6FFDAE0078DFF2 /* ExamViewController.swift */,
+				BAF653551F71825D0004F79F /* QuestionHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 		BAE25C7A1F6FFD6B0078DFF2 /* Business Logic - Interactor */ = {
 			isa = PBXGroup;
 			children = (
+				BAE25C771F6FFD5F0078DFF2 /* Model */,
 				BAE25C7D1F6FFDF10078DFF2 /* ExamInteractor.swift */,
 			);
 			path = "Business Logic - Interactor";
@@ -538,6 +542,7 @@
 				BAE25C801F6FFE420078DFF2 /* Question.swift in Sources */,
 				BA8C0ACB1F700A4E005CA6D3 /* JSonManager.swift in Sources */,
 				BAE25C4A1F6FF9570078DFF2 /* AppDelegate.swift in Sources */,
+				BAF653561F71825D0004F79F /* QuestionHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
