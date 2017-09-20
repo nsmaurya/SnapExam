@@ -12,14 +12,18 @@ class ExamViewController: UIViewController {
     
     //IBOutlet
     @IBOutlet weak var startTestButton: UIButton!
+    @IBOutlet weak var checkYourAnswersButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var getStartedView: UIView!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var bottomView: UIView!
     var rightBarButton: UIBarButtonItem!
     
     //Variables
     var questionList = [Question]()
     lazy var examInteractor = ExamInteractor.sharedInstance
+    var isAnswerCheckerInitiated = false
+    var activeTextField:UITextField?
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -35,7 +39,6 @@ class ExamViewController: UIViewController {
     }
     
     //MARK:- Helper method
-    
     fileprivate func addKeyboardObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -54,6 +57,10 @@ class ExamViewController: UIViewController {
         self.tableView.tableFooterView = UIView()
     }
     
+    fileprivate func reloadTable() {
+        self.tableView.reloadData()
+    }
+    
     fileprivate func hideKeyboard() {
         self.view.endEditing(true)
     }
@@ -63,6 +70,8 @@ class ExamViewController: UIViewController {
         self.infoLabel.text = "Question not available\n Please contact to admin"
         self.tableView.isHidden = true
         self.navigationItem.rightBarButtonItem = nil
+        self.bottomView.isHidden = false
+        self.checkYourAnswersButton.isEnabled = false
     }
     
     // MARK: Touches Began
@@ -73,15 +82,26 @@ class ExamViewController: UIViewController {
     // MARK: Keyboard Notification Method
     func keyboardDidShow(_ notification:Foundation.Notification) {
         if let dict = (notification as NSNotification).userInfo {
-            if let height = (dict[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height {
-                self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: height/2, right: 0)
+            if let keyboardHeight = (dict[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height {
+                let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
+                self.tableView.contentInset = contentInset
+                self.tableView.scrollIndicatorInsets = contentInset
+                
+                var aRect : CGRect = self.view.frame
+                aRect.size.height -= keyboardHeight
+                if let activeField = self.activeTextField {
+                    if (!aRect.contains(activeField.frame.origin)){
+                        self.tableView.scrollRectToVisible(activeField.frame, animated: true)
+                    }
+                }
             }
         }
     }
     
     func keyboardDidHide(_ notification:Foundation.Notification) {
-        self.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        self.tableView.setContentOffset(self.tableView.frame.origin, animated: true)
+        let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = contentInset
+        self.tableView.scrollIndicatorInsets = contentInset
     }
     
     //MARK:- Action method
@@ -95,17 +115,18 @@ class ExamViewController: UIViewController {
                 title = "Done"
             }
             //adding right bar button
-            self.rightBarButton = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(rightBarButtonTapped))
-            self.navigationItem.rightBarButtonItem = rightBarButton
-            
-            //adding keyboard observer
-            self.addKeyboardObserver()
-            
-            //setting up table view
-            self.tableSetup()
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if self.rightBarButton == nil {
+                self.rightBarButton = UIBarButtonItem(title: title, style: .done, target: self, action: #selector(rightBarButtonTapped))
+                //adding keyboard observer
+                self.addKeyboardObserver()
+                //setting up table view
+                self.tableSetup()
+            } else {
+                self.rightBarButton.title = title
+                self.tableView.isHidden = false
             }
+            self.navigationItem.rightBarButtonItem = rightBarButton
+            self.reloadTable()
         } else {
             self.showNoQuestionAvailableScreen()
         }
@@ -115,9 +136,15 @@ class ExamViewController: UIViewController {
         self.hideKeyboard()
         if self.rightBarButton.title == "Done" {
             self.infoLabel.textColor = UIColor.blue
-            self.infoLabel.text = "Congratulations!!!\n You are passed😊"
+            if self.isAnswerCheckerInitiated {
+                self.infoLabel.text = "Result checking done!!!\n You are passed😊"
+            } else {
+                self.infoLabel.text = "Congratulations!!!\n You are passed😊"
+            }
             self.tableView.isHidden = true
             self.navigationItem.rightBarButtonItem = nil
+            self.bottomView.isHidden = false
+            self.checkYourAnswersButton.isEnabled = true
         } else {
             var isLastPage = true
             (isLastPage, questionList) = examInteractor.getQuestions()
@@ -125,13 +152,36 @@ class ExamViewController: UIViewController {
                 self.rightBarButton.title = "Done"
             }
             if questionList.count > 0 {
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                self.reloadTable()
+                //if keyboard is open, then while reload, first cell is not shown, for showing that
+                for section in 0..<self.tableView.numberOfSections{
+                    if self.tableView.numberOfRows(inSection: section) > 0 {
+                        self.tableView.scrollToRow(at: IndexPath(row:0,section:section), at: .top, animated: false)
+                        break
+                    }
                 }
             } else {//if no question available
                 self.showNoQuestionAvailableScreen()
             }
         }
+    }
+    
+    @IBAction func gotoHomeButtonTapped(_ sender: UIButton) {
+        self.bottomView.isHidden = true
+        self.questionList = [Question]()
+        self.reloadTable()
+        self.examInteractor.resetAll(isQuestionsResetTo: true)
+        self.getStartedView.isHidden = false
+        self.isAnswerCheckerInitiated = false
+    }
+    
+    @IBAction func checkYourAnswersButtonTapped(_ sender: UIButton) {
+        self.isAnswerCheckerInitiated = true
+        self.bottomView.isHidden = true
+        self.questionList = [Question]()
+        self.reloadTable()
+        self.examInteractor.resetAll()
+        self.startTestButtonTapped(startTestButton)
     }
 }
 
@@ -166,6 +216,12 @@ extension ExamViewController:UITableViewDataSource, UITableViewDelegate {
         cell.questionTextField.isHidden = true
         cell.questionLabel.isHidden = false
         
+        if self.isAnswerCheckerInitiated {
+            cell.questionTextField.isEnabled = false
+        } else {
+            cell.questionTextField.isEnabled = true
+        }
+        
         let question = self.questionList[indexPath.section]
         let questionOption = question.questionOptions ?? [QuestionOption]()
         if let responseType = question.responseType {
@@ -193,21 +249,32 @@ extension ExamViewController:UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.hideKeyboard()
-        let question = questionList[indexPath.section]
-        if let responseType = question.responseType {
-            if let questionType = QuestionType(rawValue: responseType) {
-                examInteractor.updateAnswerOption(indexPath: indexPath, questionType: questionType)
+        if !self.isAnswerCheckerInitiated {//if no answer check running, then action
+            self.hideKeyboard()
+            let question = questionList[indexPath.section]
+            if let responseType = question.responseType {
+                if let questionType = QuestionType(rawValue: responseType) {
+                    switch questionType {
+                    case .singleSelect, .multiSelect:
+                        if examInteractor.updateAnswerOption(questionList:&self.questionList, indexPath: indexPath, questionType: questionType) {
+                            self.reloadTable()
+                        }
+                    default:
+                        break
+                    }
+                }
             }
-        }
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
         }
     }
 }
 
 //MARK:- UITextfield Delegate
 extension ExamViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField = textField
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         var cellView = textField.superview?.superview
         if let v = cellView {
@@ -217,9 +284,10 @@ extension ExamViewController: UITextFieldDelegate {
         }
         if let cell = cellView as? QuestionCell {
             if let indexPath = self.tableView.indexPath(for: cell) {
-                examInteractor.updateAnswerOption(indexPath: indexPath, questionType: .text, text: textField.text)
+                examInteractor.updateAnswerOption(questionList:&self.questionList,indexPath: indexPath, questionType: .text, text: textField.text)
             }
         }
+        activeTextField = nil
     }
 }
 

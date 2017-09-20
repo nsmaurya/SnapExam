@@ -27,6 +27,41 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2g-pC-Nq6">
+                                <rect key="frame" x="0.0" y="622" width="375" height="45"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xny-Kn-vdX">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="45"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Check Answers"/>
+                                        <connections>
+                                            <action selector="checkYourAnswersButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XfV-Nd-fPY"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XAo-xW-o9E">
+                                        <rect key="frame" x="187.5" y="0.0" width="187.5" height="45"/>
+                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Go to Home">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="gotoHomeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IgC-uv-eB9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="XAo-xW-o9E" secondAttribute="bottom" id="0dc-Uh-I0o"/>
+                                    <constraint firstItem="XAo-xW-o9E" firstAttribute="width" secondItem="Xny-Kn-vdX" secondAttribute="width" id="EBp-oH-ieQ"/>
+                                    <constraint firstAttribute="height" constant="45" id="Mb7-aU-VVj"/>
+                                    <constraint firstItem="XAo-xW-o9E" firstAttribute="leading" secondItem="Xny-Kn-vdX" secondAttribute="trailing" id="QV8-Ws-QJX"/>
+                                    <constraint firstAttribute="trailing" secondItem="XAo-xW-o9E" secondAttribute="trailing" id="TKe-Da-i06"/>
+                                    <constraint firstItem="XAo-xW-o9E" firstAttribute="top" secondItem="N2g-pC-Nq6" secondAttribute="top" id="b4F-bp-Iy5"/>
+                                    <constraint firstItem="Xny-Kn-vdX" firstAttribute="top" secondItem="N2g-pC-Nq6" secondAttribute="top" id="dh4-ta-egQ"/>
+                                    <constraint firstItem="Xny-Kn-vdX" firstAttribute="leading" secondItem="N2g-pC-Nq6" secondAttribute="leading" id="llL-aJ-JuG"/>
+                                    <constraint firstAttribute="bottom" secondItem="Xny-Kn-vdX" secondAttribute="bottom" id="o9e-51-ps1"/>
+                                </constraints>
+                            </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zmh-LA-6he">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
@@ -130,14 +165,19 @@
                             <constraint firstItem="hyY-JY-y1S" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Cri-ml-hDf"/>
                             <constraint firstItem="Zmh-LA-6he" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="GNV-2u-znD"/>
                             <constraint firstItem="GTg-Xd-sQ3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="GZg-2P-IWy"/>
+                            <constraint firstItem="N2g-pC-Nq6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="SQB-pY-vZN"/>
                             <constraint firstAttribute="trailing" secondItem="GTg-Xd-sQ3" secondAttribute="trailing" constant="20" id="XiF-t9-Lg0"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hyY-JY-y1S" secondAttribute="bottom" id="Xm5-iN-W75"/>
                             <constraint firstItem="hyY-JY-y1S" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="aD2-x5-VLA"/>
+                            <constraint firstAttribute="trailing" secondItem="N2g-pC-Nq6" secondAttribute="trailing" id="kML-cv-LBT"/>
                             <constraint firstItem="GTg-Xd-sQ3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="yQ0-67-FgI"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="N2g-pC-Nq6" secondAttribute="bottom" id="zNQ-eA-UhO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Snap Exam" id="ghc-Ip-LMg"/>
                     <connections>
+                        <outlet property="bottomView" destination="N2g-pC-Nq6" id="QgD-ic-9iN"/>
+                        <outlet property="checkYourAnswersButton" destination="Xny-Kn-vdX" id="ji8-kq-jYh"/>
                         <outlet property="getStartedView" destination="Zmh-LA-6he" id="vlC-uO-vqY"/>
                         <outlet property="infoLabel" destination="GTg-Xd-sQ3" id="jnP-7a-KhK"/>
                         <outlet property="startTestButton" destination="feW-VA-Fha" id="eIm-gW-Kjr"/>
